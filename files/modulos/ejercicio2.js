@@ -1,20 +1,23 @@
 export function ejercicio2() {
   function fusionarCatalogos(a, b) {
     try {
-      if (!Array.isArray(a) || !Array.isArray(b)) {
+      if (!(a instanceof Array) || !(b instanceof Array)) {
         throw new Error("Ambos parámetros deben ser arreglos.");
       }
 
-      // Spread: nuevo arreglo, los originales no se modifican
       const fusion = [...a, ...b];
 
-      // Copia manual — reemplaza .slice()
+      for (let i = 0; i < fusion.length; i++) {
+        if (typeof fusion[i].precio !== "number" || isNaN(fusion[i].precio)) {
+          throw new Error(`El curso en la posición ${i} no tiene un precio válido.`);
+        }
+      }
+
       const ordenado = [];
       for (let i = 0; i < fusion.length; i++) {
         ordenado[i] = fusion[i];
       }
 
-      // Ordenamiento burbuja ascendente por precio — reemplaza .sort()
       for (let i = 0; i < ordenado.length - 1; i++) {
         for (let j = 0; j < ordenado.length - 1 - i; j++) {
           if (ordenado[j].precio > ordenado[j + 1].precio) {
@@ -25,7 +28,17 @@ export function ejercicio2() {
         }
       }
 
-      return ordenado;
+      const catalogo = [];
+      for (let i = 0; i < ordenado.length; i++) {
+        const { id, nombre, precio } = ordenado[i];
+        catalogo[i] = {
+          get id() { return id; },
+          get nombre() { return nombre; },
+          get precio() { return precio; }
+        };
+      }
+
+      return catalogo;
     } catch (error) {
       return { error: error.message };
     }
@@ -41,7 +54,7 @@ export function ejercicio2() {
     const id = i + 1;
     const nombre = prompt(`Nombre del curso ${id} en catálogo A:`);
     const precio = parseFloat(prompt(`Precio del curso ${id}:`));
-    catalogoA[catalogoA.length] = { id, nombre, precio };   // reemplaza .push()
+    catalogoA[catalogoA.length] = { id, nombre, precio };
   }
 
   const cantidadB = parseInt(prompt("¿Cuántos cursos desea ingresar en catálogo B?"));
@@ -54,7 +67,7 @@ export function ejercicio2() {
     const id = cantidadA + i + 1;
     const nombre = prompt(`Nombre del curso ${id} en catálogo B:`);
     const precio = parseFloat(prompt(`Precio del curso ${id}:`));
-    catalogoB[catalogoB.length] = { id, nombre, precio };   // reemplaza .push()
+    catalogoB[catalogoB.length] = { id, nombre, precio };
   }
 
   return fusionarCatalogos(catalogoA, catalogoB);

@@ -5,35 +5,27 @@ export function ejercicio5() {
         throw new Error("Debe enviar al menos una configuración.");
       }
 
-      // Reemplaza .every() — valida que cada elemento sea un objeto
       for (let i = 0; i < configs.length; i++) {
         const c = configs[i];
-        if (typeof c !== "object" || c === null || Array.isArray(c)) {
-          throw new Error(
-            `La configuración en la posición ${i} no es un objeto válido.`
-          );
+        if (typeof c !== "object" || c === null || c instanceof Array) {
+          throw new Error(`La configuración en la posición ${i} no es un objeto válido.`);
         }
       }
 
-      // Reemplaza .reduce() — mezcla con spread en cada vuelta
       let final = {};
       for (let i = 0; i < configs.length; i++) {
         final = { ...final, ...configs[i] };
       }
 
-      return { ...final, validacion: true };
+      return { ...final, configuracionesAplicadas: configs.length, validacion: true };
     } catch (error) {
       return { validacion: false, error: error.message };
     }
   }
 
   const cantidad = parseInt(prompt("¿Cuántas configuraciones desea ingresar?"));
-
   if (isNaN(cantidad) || cantidad <= 0) {
-    return {
-      validacion: false,
-      error: "La cantidad de configuraciones debe ser un número mayor a cero."
-    };
+    return { validacion: false, error: "La cantidad debe ser un número mayor a cero." };
   }
 
   const configs = [];
@@ -48,14 +40,12 @@ export function ejercicio5() {
 
         if (clave !== null && clave.trim() !== "") {
           obj[clave.trim()] =
-            valor !== null && valor.trim() !== "" && !isNaN(valor)
-              ? Number(valor)
-              : valor;
+            valor !== null && valor.trim() !== "" && !isNaN(valor) ? Number(valor) : valor;
         }
       }
     }
 
-    configs[configs.length] = obj;   // reemplaza .push()
+    configs[configs.length] = obj;
   }
 
   return configFinal(...configs);

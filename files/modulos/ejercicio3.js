@@ -4,14 +4,13 @@ export function ejercicio3() {
       if (!cliente?.nombre || !cliente?.correo) {
         throw new Error("El cliente debe tener nombre y correo.");
       }
-      if (!Array.isArray(productos)) {
+      if (!(productos instanceof Array)) {
         throw new Error("Los productos deben enviarse en un arreglo.");
       }
       if (productos.length === 0) {
         throw new Error("Debe registrar al menos un producto.");
       }
 
-      // Reemplaza .every() — valida cada producto
       for (let i = 0; i < productos.length; i++) {
         const p = productos[i];
         if (!p?.nombre || typeof p.precio !== "number" || isNaN(p.precio)) {
@@ -19,25 +18,31 @@ export function ejercicio3() {
         }
       }
 
-      // Spread: objeto nuevo con la información del cliente
       const nuevoCliente = { ...cliente };
-
-      // Destructuración: primer producto separado del resto
       const [primerProducto, ...resto] = productos;
 
-      // Reemplaza .reduce() — suma manual del precio total
       let precioTotal = 0;
       for (let i = 0; i < productos.length; i++) {
         precioTotal += productos[i].precio;
       }
 
-      return Object.freeze({
-        cliente: nuevoCliente,
-        totalProductos: productos.length,
-        precioTotal,
-        primerProducto: primerProducto.nombre,
-        productosRestantes: resto.length
-      });
+      const totalProductos = productos.length;
+      const productosRestantes = resto.length;
+      const nombrePrimero = primerProducto.nombre;
+      const { nombre: nombreCliente, correo } = nuevoCliente;
+
+      return {
+        get cliente() {
+          return {
+            get nombre() { return nombreCliente; },
+            get correo() { return correo; }
+          };
+        },
+        get totalProductos() { return totalProductos; },
+        get precioTotal() { return precioTotal; },
+        get primerProducto() { return nombrePrimero; },
+        get productosRestantes() { return productosRestantes; }
+      };
     } catch (error) {
       return { error: error.message };
     }
@@ -55,7 +60,7 @@ export function ejercicio3() {
   for (let i = 0; i < cantidad; i++) {
     const nombreProd = prompt(`Nombre del producto ${i + 1}:`);
     const precio = parseFloat(prompt(`Precio del producto ${i + 1}:`));
-    productos[productos.length] = { nombre: nombreProd, precio };   // reemplaza .push()
+    productos[productos.length] = { nombre: nombreProd, precio };
   }
 
   return procesarCompra({ nombre, correo }, productos);
