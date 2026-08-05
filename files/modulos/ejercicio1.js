@@ -3,7 +3,7 @@ export function ejercicio1() {
     try {
       if (!nombre) throw new Error("El nombre es obligatorio.");
 
-      // Reemplaza .every() — valida que todas las notas sean números
+     
       for (let i = 0; i < notas.length; i++) {
         if (typeof notas[i] !== "number" || isNaN(notas[i])) {
           throw new Error("Todas las notas deben ser números.");
@@ -12,7 +12,7 @@ export function ejercicio1() {
 
       const [primeraNota, ...restoNotas] = notas;
 
-      // Reemplaza .reduce() — suma manual del resto de notas
+      
       let promedioResto = 0;
       if (restoNotas.length > 0) {
         let suma = 0;
@@ -43,7 +43,7 @@ export function ejercicio1() {
   const notas = [];
   for (let i = 0; i < cantidad; i++) {
     const nota = parseFloat(prompt(`Ingrese la nota ${i + 1}:`));
-    notas[notas.length] = nota;   // Reemplaza .push()
+    notas[notas.length] = nota;   
   }
 
   return crearEstudiante(nombre, ...notas);
