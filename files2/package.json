@@ -1,0 +1,10 @@
+{
+  "name": "operadores-modernos",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Ejercicios de rest, spread, destructuracion e inmutabilidad",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js"
+  }
+}
